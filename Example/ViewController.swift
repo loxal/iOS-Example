@@ -16,6 +16,18 @@ class ViewController: UIViewController {
         NSLog("Button clicked")
         label.text = "Hello, " + textField.text + "!"
         textField.text = textField.text + " happened!"
+        
+        retrieveContent()
+    }
+    
+    func retrieveContent() {
+        let url = NSURL(string: "http://customer-dev-v1.test.cf.hybris.com/orders")
+        
+        let task = NSURLSession.sharedSession().dataTaskWithURL(url) {
+            (data, response, error) in println(NSString(data: data, encoding: NSUTF8StringEncoding))
+        }
+        
+        task.resume()
     }
     
     override func viewDidLoad() {
