@@ -1,6 +1,7 @@
 //  Copyright 2014 Alexander Orlov <alexander.orlov@loxal.net>. All rights reserved.
 
 import UIKit
+import LocalAuthentication
 
 class ViewController: UIViewController {
     
@@ -18,6 +19,24 @@ class ViewController: UIViewController {
         textField.text = textField.text + " happened!"
         
         retrieveContentAsynchronously()
+    }
+    
+    @IBAction func testTouchID(sender : AnyObject) {
+        let touchIDContext = LAContext()
+        let reasonString = "Login"
+        var touchIDError : NSError?
+        
+        if touchIDContext.canEvaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, error:&touchIDError) {
+            touchIDContext.evaluatePolicy(LAPolicy.DeviceOwnerAuthenticationWithBiometrics, localizedReason: reasonString, reply: {
+                (success: Bool, error: NSError?) -> Void in
+                if success {
+                    println("Success")
+                } else {
+                    println("Failure")
+                }
+                }
+            )
+        }
     }
     
     func retrieveContentAsynchronously() {
