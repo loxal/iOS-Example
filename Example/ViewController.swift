@@ -17,17 +17,16 @@ class ViewController: UIViewController {
         label.text = "Hello, " + textField.text + "!"
         textField.text = textField.text + " happened!"
         
-        retrieveContent()
+        retrieveContentAsynchronously()
     }
     
-    func retrieveContent() {
+    func retrieveContentAsynchronously() {
         let url = NSURL(string: "http://customer-dev-v1.test.cf.hybris.com/orders")
+        let request = NSURLRequest(URL: url)
         
-        let task = NSURLSession.sharedSession().dataTaskWithURL(url) {
-            (data, response, error) in println(NSString(data: data, encoding: NSUTF8StringEncoding))
+        NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
+            (response, data, error) in println(NSString(data: data, encoding: NSUTF8StringEncoding))
         }
-        
-        task.resume()
     }
     
     override func viewDidLoad() {
@@ -41,4 +40,3 @@ class ViewController: UIViewController {
         println("Dispose of any resources that can be recreated.")
     }
 }
-
