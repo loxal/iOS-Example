@@ -21,7 +21,7 @@ class ViewController: UIViewController {
         retrieveContentAsynchronously()
     }
     
-    @IBAction func testTouchID(sender : AnyObject) {
+    @IBAction func authenticate(sender : AnyObject) {
         let touchIDContext = LAContext()
         let reasonString = "Login"
         var touchIDError : NSError?
@@ -36,6 +36,8 @@ class ViewController: UIViewController {
                 }
                 }
             )
+        } else {
+            println("Touch ID Failure")
         }
     }
     
