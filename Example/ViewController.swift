@@ -21,11 +21,21 @@ class ViewController: UIViewController {
     }
     
     func retrieveContentAsynchronously() {
-        let url = NSURL(string: "http://customer-dev-v1.test.cf.hybris.com/orders")
-        let request = NSURLRequest(URL: url)
+        let url = NSURL(string: "http://customer-dev-v1.test.cf.hybris.com/registration")
+        let request = NSMutableURLRequest(URL: url)
+        
+        request.addValue("application/json", forHTTPHeaderField: "Content-Type")
+        request.addValue("loxal", forHTTPHeaderField: "hybris-tenant")
+        request.HTTPMethod = "POST"
+        
+        let payload = "{\"email\": \"noreply6@hybris.com\", \"name\": \"user6\"}"
+        let payloadData = (payload as NSString).dataUsingEncoding(NSUTF8StringEncoding)
+        request.HTTPBody = payloadData
         
         NSURLConnection.sendAsynchronousRequest(request, queue: NSOperationQueue.mainQueue()) {
             (response, data, error) in println(NSString(data: data, encoding: NSUTF8StringEncoding))
+            let json = NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions.MutableContainers, error: nil) as Dictionary<String, String!>
+            println(json["moreInfo"])
         }
     }
     
